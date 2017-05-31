@@ -60,11 +60,8 @@ module.exports = function(grunt) {
 		// SCSSのコンパイル
 		sass: {
 			options: {
-				sourcemap: 'none',
-				unixNewlines: true,
-				style: 'expanded',
-				bundleExec: true,
-				loadPath: ['bower_components/bootstrap-sass/assets/stylesheets/']
+				outputStyle: 'expanded',
+				includePaths: ['bower_components/bootstrap-sass/assets/stylesheets/']
 			},
 			bootstrap: {
 				files: [{
@@ -77,7 +74,7 @@ module.exports = function(grunt) {
 			},
 			assets: {
 				options: {
-					loadPath: ['scss/']
+					includePaths: ['scss/']
 				},
 				files: [{
 					expand: true,
@@ -120,13 +117,7 @@ module.exports = function(grunt) {
 			}
 		},
 		// SCSSのLinter
-		scsslint: {
-			options: {
-				bundleExec: true,
-				config: '.scss-lint.yml',
-				reporterOutput: null,
-				colorizeOutput: true
-			},
+		'sass-lint': {
 			bootstrap: ['scss/**/*.scss'],
 			assets: ['docs/assets/scss/**/*.scss']
 		},
@@ -152,7 +143,7 @@ module.exports = function(grunt) {
 			// 自動コンパイル
 			bootstrap: {
 				files: ['scss/**/*.scss', 'docs/assets/scss/**/*.scss'],
-				tasks: ['scsslint', 'css', 'csscomb', 'copy:docs']
+				tasks: ['sass-lint', 'css', 'csscomb', 'copy:docs']
 			}
 		},
 		copy: {
@@ -245,7 +236,7 @@ module.exports = function(grunt) {
 	});
 
 	// テスト
-	grunt.registerTask('test', ['scsslint']);
+	grunt.registerTask('test', ['sass-lint']);
 
 	// CSSビルド
 	grunt.registerTask('css', ['sass', 'autoprefixer', 'csscomb']);
